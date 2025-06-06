@@ -36,7 +36,7 @@ import java.util.Comparator;
 import java.util.List;
 
 // A straight-up copy of Meteors StashFinder, but with some slight changes.
-public class BetterStashFinderModule extends Module {
+public class TSRBetterStashFinderModule extends Module {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
@@ -77,7 +77,7 @@ public class BetterStashFinderModule extends Module {
     private final Setting<StashFinder.Mode> notificationMode = sgGeneral.add(new EnumSetting.Builder<StashFinder.Mode>()
         .name("notification-mode")
         .description("The mode to use for notifications.")
-        .defaultValue(StashFinder.Mode.Both)
+        .defaultValue(StashFinder.Mode.Chat)
         .visible(sendNotifications::get)
         .build()
     );
@@ -91,8 +91,8 @@ public class BetterStashFinderModule extends Module {
 
     public List<StashFinder.Chunk> chunks = new ArrayList<>();
 
-    public BetterStashFinderModule() {
-        super(DeondreeAddon.CATEGORY, "better-stash-finder", "Searches loaded chunks for storage blocks. Saves to <your minecraft folder>/meteor-client");
+    public TSRBetterStashFinderModule() {
+        super(DeondreeAddon.SIXBSIXT, "[TSR]: Better Stash Finder", "Searches loaded chunks for storage blocks. Saves to <your minecraft folder>/meteor-client");
     }
 
     @Override

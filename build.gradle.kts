@@ -2,8 +2,13 @@ plugins {
     id("fabric-loom") version "1.10-SNAPSHOT"
 }
 
+val targetVersion = findProperty("target_version") as String? ?: "1_21_4"
+val minecraftVersion = properties["minecraft_version_$targetVersion"] as String
+val yarnMappings = properties["yarn_mappings_$targetVersion"] as String
+val loaderVersion = properties["loader_version_$targetVersion"] as String
+
 base {
-    archivesName = properties["archives_base_name"] as String
+    archivesName = "${properties["archives_base_name"] as String} ($minecraftVersion)"
     version = properties["mod_version"] as String
     group = properties["maven_group"] as String
 }
@@ -17,23 +22,41 @@ repositories {
         name = "meteor-maven-snapshots"
         url = uri("https://maven.meteordev.org/snapshots")
     }
+    maven {
+        url = uri("https://impactdevelopment.github.io/maven/")
+    }
+    maven {
+        name = "babbaj-repo"
+        url = uri("https://babbaj.github.io/maven/")
+    }
 }
+
+val meteorClientVersion = if (minecraftVersion == "1.21.1") "0.5.8" else minecraftVersion
 
 dependencies {
     // Fabric
-    minecraft("com.mojang:minecraft:${properties["minecraft_version"] as String}")
-    mappings("net.fabricmc:yarn:${properties["yarn_mappings"] as String}:v2")
-    modImplementation("net.fabricmc:fabric-loader:${properties["loader_version"] as String}")
+    minecraft("com.mojang:minecraft:$minecraftVersion")
+    mappings("net.fabricmc:yarn:$yarnMappings:v2")
+    modImplementation("net.fabricmc:fabric-loader:$loaderVersion")
 
     // Meteor
-    modImplementation("meteordevelopment:meteor-client:${properties["minecraft_version"] as String}-SNAPSHOT")
+    modImplementation("meteordevelopment:meteor-client:$meteorClientVersion-SNAPSHOT")
+
+    // Baritone
+    modImplementation("meteordevelopment:baritone:$minecraftVersion-SNAPSHOT")
+    implementation("dev.babbaj:nether-pathfinder:1.6")
+
+
 }
 
 tasks {
     processResources {
+        val commit = project.findProperty("commit")?.toString() ?: ""
+
         val propertyMap = mapOf(
             "version" to project.version,
-            "mc_version" to project.property("minecraft_version"),
+            "mc_version" to minecraftVersion,
+            "commit" to commit,
         )
 
         inputs.properties(propertyMap)

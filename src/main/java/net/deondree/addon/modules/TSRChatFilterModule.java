@@ -255,7 +255,7 @@ public class TSRChatFilterModule extends Module {
     }
 
     public TSRChatFilterModule() {
-        super(DeondreeAddon.CATEGORY, "6B6T Chat Filter", "Omegaware ChatFilter, Repo: https://github.com/Omega172/OmegaWare-Addons");
+        super(DeondreeAddon.SIXBSIXT, "[TSR]: Better Chat Filter", "Omegaware ChatFilter, Repo: https://github.com/Omega172/OmegaWare-Addons");
     }
 
 

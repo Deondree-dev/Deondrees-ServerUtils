@@ -8,25 +8,19 @@ import net.minecraft.command.CommandSource;
 /**
  * The Meteor Client command API uses the <a href="https://github.com/Mojang/brigadier">same command system as Minecraft does</a>.
  */
-public class CommandExample extends Command {
+public class CreditCommand extends Command {
     /**
      * The {@code name} parameter should be in kebab-case.
      */
-    public CommandExample() {
-        super("example", "Sends a message.");
+    public CreditCommand() {
+        super("credits", "List Projects that helped me build this.");
     }
 
     @Override
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
         builder.executes(context -> {
-            info("hi");
+            info("§l§e6B§b6T§f§r: §bOmegaware §7by §3omega172 §7& §bPowie69");
             return SINGLE_SUCCESS;
         });
-
-        builder.then(literal("name").then(argument("nameArgument", StringArgumentType.word()).executes(context -> {
-            String argument = StringArgumentType.getString(context, "nameArgument");
-            info("hi, " + argument);
-            return SINGLE_SUCCESS;
-        })));
     }
 }

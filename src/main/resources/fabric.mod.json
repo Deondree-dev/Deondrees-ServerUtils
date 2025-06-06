@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "deondreeutilities",
   "version": "${version}",
-  "name": "ServerUtils",
+  "name": "BetterUtils",
   "description": "A addon that adds utilities to meteor (fabric mod coming if I get fabric developers)",
   "authors": [
     "Vinny2052"
@@ -18,7 +18,7 @@
     ]
   },
   "mixins": [
-    "addon-template.mixins.json"
+    "Utils.mixins.json"
   ],
   "custom": {
     "meteor-client:color": "252,149,53"
