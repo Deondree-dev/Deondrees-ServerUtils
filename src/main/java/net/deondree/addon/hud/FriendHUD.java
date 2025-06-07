@@ -22,7 +22,7 @@ public class FriendHUD extends HudElement {
     List<String> AddedFriends = new ArrayList<>();
     List<String> OnlineFriends = new ArrayList<>();
     List<String> OfflineFriends = new ArrayList<>();
-    int BIGGESTTEXTWIDTH = 0;
+    double BIGGESTTEXTWIDTH = 0.0;
     public static final HudElementInfo<FriendHUD> INFO = new HudElementInfo<>(DeondreeAddon.HUD_GROUP, "example", "HUD element example.", FriendHUD::new);
 
     public FriendHUD() {
@@ -35,6 +35,9 @@ public class FriendHUD extends HudElement {
         AtomicInteger i = new AtomicInteger();
         AtomicInteger finalI = i;
         Friends.get().forEach(friend -> {
+            if(renderer.textWidth(friend.name) > BIGGESTTEXTWIDTH){
+                BIGGESTTEXTWIDTH = renderer.textWidth(friend.name);
+            }
             finalI.getAndIncrement();
             AddedFriends.clear();
             OnlineFriends.clear();
@@ -48,7 +51,7 @@ public class FriendHUD extends HudElement {
                 .anyMatch(entry -> entry.getProfile().getName().equalsIgnoreCase(friend.name));
 
             if(FriendOnline){
-                setSize(renderer.textWidth(friend.name, true), renderer.textHeight(true));
+                setSize(BIGGESTTEXTWIDTH, renderer.textHeight(true));
                 renderer.text(friend.name, x, y + finalI.intValue() * 10, Color.GREEN, true);
             } else {
                 OfflineFriends.add(friend.name);
