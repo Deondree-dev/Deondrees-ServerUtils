@@ -7,22 +7,28 @@ import meteordevelopment.meteorclient.systems.waypoints.Waypoint;
 import meteordevelopment.meteorclient.systems.waypoints.Waypoints;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
+import net.deondree.addon.modules.MenuModule;
 import net.minecraft.command.CommandSource;
+import net.minecraft.network.message.SentMessage;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
+import net.minecraft.util.ColorCode;
 import net.minecraft.util.math.BlockPos;
 
+import net.deondree.addon.*;
 import net.minecraft.text.Text;
 import net.minecraft.text.Style;
 import net.minecraft.util.Formatting;
+
+import java.util.Objects;
 
 public class BetterListWaypoinsCommand extends Command {
     public BetterListWaypoinsCommand() {
         super("lwp", "Adds better Waypoints/more readable");
     }
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
-        builder.then(literal("name").then(argument("nameArgument", StringArgumentType.word()).executes(context -> {
-            String argument = StringArgumentType.getString(context, "nameArgument");
+        builder.then(literal("make").then(argument("Name", StringArgumentType.word()).executes(context -> {
+            String argument = StringArgumentType.getString(context, "Name");
 
             if (mc.player == null) return -1;
 
@@ -39,21 +45,36 @@ public class BetterListWaypoinsCommand extends Command {
         builder.then(literal("list").executes(context -> {
             Waypoints.get();
             for (Waypoint waypoint : Waypoints.get()) {
-                Text prefix = Text.literal("[Utils] ")
-                    .setStyle(Style.EMPTY.withColor(Formatting.GOLD));
+                Text prefix = Text.literal("§f[§6Utils§f] ");
 
-                Text name = Text.literal("[" + waypoint.name + "]")
+                Text name = Text.literal(String.valueOf(waypoint.name))
                     .setStyle(Style.EMPTY
                         .withColor(Formatting.AQUA)
-                        .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/yourCommandHere " + waypoint.name))
-                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Goto pos")))
+                        .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "#goto " +
+                            waypoint.pos.get().getX() + " " +
+                            waypoint.pos.get().getY() + " " +
+                            waypoint.pos.get().getZ()))
+                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click to go to waypoint")))
                     );
 
-                String coords = ": " + waypoint.pos.get().getX() + ", " + waypoint.pos.get().getY() + ", " + waypoint.pos.get().getZ();
+                Text coords = Text.literal(": " + waypoint.pos.get().getX() + ", " + waypoint.pos.get().getY() + ", " + waypoint.pos.get().getZ());
 
-                Text fullMessage = Text.empty().append(prefix).append(name).append(Text.literal(coords));
+                Text del = Text.literal(" §4[DEL]§r")
+                    .setStyle(Style.EMPTY
+                        .withColor(Formatting.AQUA)
+                        .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, ".waypoint delete " + waypoint.name.get()))
+                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal(".lwp delete " + waypoint.name.get())))
+                    );
+
+
+                Text fullMessage = Text.empty()
+                        .append(prefix)
+                        .append(name)
+                        .append(coords);
 
                 ChatUtils.sendMsg(fullMessage);
+
+
                 // Text.of(String.format("(%.0f, %.0f, %.0f)", (double) waypoint.pos.get().getX(), (double) waypoint.pos.get().getY(), (double) waypoint.pos.get().getZ()));
 
             }
@@ -61,5 +82,33 @@ public class BetterListWaypoinsCommand extends Command {
 
             return SINGLE_SUCCESS;
         }));
+        builder.then(literal("delete").then(argument("waypoint", StringArgumentType.word()).executes(context -> {
+            String argument = StringArgumentType.getString(context, "waypoint");
+            boolean FOUND = false;
+
+            for (Waypoint waypoint : Waypoints.get()) {
+                if (waypoint.name.get().equalsIgnoreCase(argument)) {
+                    FOUND = true;
+                    Waypoints.get().remove(waypoint);
+                    ChatUtils.sendMsg(Text.literal("[§6Utils§f] Successfully Deleted ")
+                        .append(argument).setStyle(Style.EMPTY
+                            .withColor(Formatting.AQUA))
+
+                    );
+                    break;
+                }
+            }
+            if(!FOUND){
+                ChatUtils.sendMsg(Text.literal("[§6Utils§f] ")
+                    .append(argument).setStyle(Style.EMPTY
+                        .withColor(Formatting.AQUA))
+                    .append(Text.literal("Failed to delete, §4NOTFOUND"))
+                );
+
+            }
+
+
+            return SINGLE_SUCCESS;
+        })));
     }
 }

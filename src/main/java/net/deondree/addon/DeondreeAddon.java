@@ -2,6 +2,7 @@ package net.deondree.addon;
 
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.pathing.BaritoneUtils;
+import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.utils.Utils;
 import net.deondree.addon.commands.BetterListWaypoinsCommand;
 import net.deondree.addon.commands.CreditCommand;
@@ -12,6 +13,8 @@ import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.systems.hud.HudGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
+import net.deondree.addon.hud.FriendHUD;
+import net.deondree.addon.modules.MenuModule;
 import net.deondree.addon.modules.TSRBetterStashFinderModule;
 import net.deondree.addon.modules.TSRChatFilterModule;
 import net.minecraft.client.MinecraftClient;
@@ -29,6 +32,7 @@ import java.lang.invoke.MethodHandles;
 
 public class DeondreeAddon extends MeteorAddon {
     public static final Logger LOG = LogUtils.getLogger();
+    public static final Category Menu = new Category("Deondree's Utils - Menu");
     public static final Category SIXBSIXT = new Category("Deondree's Utils - 6b6t.org");
 
     public static final HudGroup HUD_GROUP = new HudGroup("Deondree's Utils");
@@ -90,19 +94,24 @@ public class DeondreeAddon extends MeteorAddon {
         // Modules
         Modules.get().add(new TSRChatFilterModule());
         Modules.get().add(new TSRBetterStashFinderModule());
+        Modules.get().add(new MenuModule());
 
 
         // Commands
         Commands.add(new CreditCommand());
         Commands.add(new BetterListWaypoinsCommand());
 
-        // HUD: None
+        // HUD
+        Hud.get().register(FriendHUD.INFO);
     }
 
 
     @Override
     public void onRegisterCategories() {
         Modules.registerCategory(SIXBSIXT);
+        Modules.registerCategory(Menu);
+
+
 
 
     }
