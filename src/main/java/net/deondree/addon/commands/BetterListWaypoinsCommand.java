@@ -24,7 +24,7 @@ import java.util.Objects;
 
 public class BetterListWaypoinsCommand extends Command {
     public BetterListWaypoinsCommand() {
-        super("lwp", "Adds better Waypoints/more readable");
+        super("WP", "Adds better Waypoints/more readable");
     }
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
         builder.then(literal("make").then(argument("Name", StringArgumentType.word()).executes(context -> {

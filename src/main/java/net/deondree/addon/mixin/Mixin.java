@@ -1,13 +1,17 @@
 package net.deondree.addon.mixin;
 
 
+import meteordevelopment.meteorclient.systems.friends.Friend;
+import meteordevelopment.meteorclient.systems.friends.Friends;
 import net.deondree.addon.DeondreeAddon;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
-import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Example Mixin class.
@@ -20,13 +24,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * <li><a href="https://github.com/2xsaiko/mixin-cheatsheet">The Mixin cheatsheet</a></li>
  * </ul>
  */
-@Mixin(MinecraftClient.class)
-public abstract class ExampleMixin {
+@org.spongepowered.asm.mixin.Mixin(MinecraftClient.class)
+public abstract class Mixin {
     /**
      * Example Mixin injection targeting the {@code <init>} method (the constructor) at {@code TAIL} (end of method).
      */
     @Inject(method = "<init>", at = @At("TAIL"))
     private void onGameLoaded(RunArgs args, CallbackInfo ci) {
-        DeondreeAddon.LOG.info("Hello from ExampleMixin!");
+
     }
 }
