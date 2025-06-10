@@ -92,7 +92,7 @@ public class MenuModule extends Module {
             }
         });
 
-        DeondreeAddon.LOG.info("Message recieved: "+(Object) (message.replace(MessageArray[0], "")).trim()+" From: " + RNKanName[RNKanName.length - 1]);
+        //DeondreeAddon.LOG.info("Message recieved: "+(Object) (message.replace(MessageArray[0], "")).trim()+" From: " + RNKanName[RNKanName.length - 1]);
 
     }
 
